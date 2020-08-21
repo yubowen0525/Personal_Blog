@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pagination %}
+{#{% from "blog/macro_test.html" import pager %}#}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        {#  从admin用户里面拿出来数据  #}
+        <h1 class="display-3">{{ admin.blog_title|default('Blog Title') }}</h1>
+        <h4 class="text-muted">&nbsp;{{ admin.blog_sub_title|default('Blog Subtitle') }}</h4>
+    </div>
+    <div class="row">
+        {# 分块，div一块一块的  主页块  #}
+        <div class="col-sm-8">
+            {% include 'blog/_posts.html' %}
+            {#   通过数据库对象渲染分页对象 两种分页方式 render_pager render_pagination  #}
+            {% if posts %}
+{#                <div class="page-footer">{{ pager(pagination) }}</div>#}
+                <div class="page-footer">{{ render_pagination(pagination) }}</div>
+            {% endif %}
+        </div>
+        {#  边块  #}
+        <div class="col-sm-4 sidebar">
+            {% include 'blog/_sidebar.html' %}
+        </div>
+    </div>
+{% endblock %}
