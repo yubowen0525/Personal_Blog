@@ -40,6 +40,7 @@ class SettingForm(FlaskForm):
 class PostForm(FlaskForm):
     """
     文章表单
+    这里加入了 CKEditorField 表单
     """
     title = StringField('Title', validators=[DataRequired(), Length(1, 60)])
     # selectfield 表示 HTML中的 <select> 控件提供选项菜单

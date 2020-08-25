@@ -12,6 +12,7 @@
     </h1>
 </div>
 {% if posts %}
+{# table class 表格 #}
 <table class="table table-striped">
     <thead>
     <tr>
@@ -34,6 +35,7 @@
         <td><a href="{{ url_for('blog.show_post', post_id=post.id) }}#comments">{{ post.comments|length }}</a></td>
         <td>{{ post.body|striptags|length }}</td>
         <td>
+            {# 修改后台数据，通过form传送POST到后台 disable Comment #}
             <form class="inline" method="post"
                   action="{{ url_for('.set_comment', post_id=post.id, next=request.full_path) }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
@@ -41,10 +43,13 @@
                     {% if post.can_comment %}Disable{% else %}Enable{% endif %} Comment
                 </button>
             </form>
+            {# Edit #}
             <a class="btn btn-info btn-sm" href="{{ url_for('.edit_post', post_id=post.id) }}">Edit</a>
+            {# Delete #}
             <form class="inline" method="post"
                   action="{{ url_for('.delete_post', post_id=post.id, next=request.full_path) }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                {# 增加一个删除弹窗，防止误点。<button>添加一个onclick属性，设置一行JavaScript代码，return confrim #}
                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete
                 </button>
             </form>

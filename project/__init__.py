@@ -5,6 +5,9 @@ import click
 from flask import Flask, render_template, request
 from flask_wtf.csrf import CSRFError
 from flask_login import current_user
+
+from .blueprints.admin import admin_bp
+from .blueprints.auth import auth_bp
 from .models import Admin, Post, Category, Comment, Link
 from .setting import config, basedir
 from .blueprints.blog import blog_bp
@@ -80,6 +83,8 @@ def register_extensions(app):
 
 def register_blueprints(app):
     app.register_blueprint(blog_bp)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(admin_bp)
 
 
 # 因为扩展初始化操作分离，db.create_all()将依赖于程序上下文才能正常执行
@@ -123,7 +128,12 @@ def register_commands(app):
     @click.option('--password', prompt=True, hide_input=True,
                   confirmation_prompt=True, help='The password used to login.')
     def init(username, password):
-        """Building Bluelog, just for you."""
+        """
+        Building Bluelog, just for you  prompt 必须填写的参数 ， hide_input 会隐藏输入，也可以使用@click.password_option装饰器
+        :param username:
+        :param password:
+        :return:
+        """
 
         click.echo('Initializing the database...')
         db.create_all()

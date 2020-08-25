@@ -32,6 +32,11 @@ class Admin(db.Model, UserMixin):
     about = db.Column(db.Text)
 
     def set_password(self, password):
+        """
+        将密码散列计算生成hash值，默认加salt长度为8，增加随机性。method$salt$hash
+        :param password:
+        :return:
+        """
         self.password_hash = generate_password_hash(password)
 
     def validate_password(self, password):

@@ -110,10 +110,10 @@ def show_post(post_id):
             author=author, email=email, site=site, body=body,
             from_admin=from_admin, post=post, reviewed=reviewed)
         replied_id = request.args.get('reply')
-        # 获取
+        # 是否是回复，如果是回复，
         if replied_id:
             replied_comment = Comment.query.get_or_404(replied_id)
-            comment.replied = replied_comment
+            comment.replied = replied_comment   #双向绑定，comment.replied 就是父亲是 replied_comment , replied_comment.replies是评论的回复
             send_new_reply_email(replied_comment)
         db.session.add(comment)
         db.session.commit()
@@ -134,12 +134,13 @@ def reply_comment(comment_id):
     :param comment_id: 触发评论的id
     :return:
     """
+    # 点击replay 回到这个接口构造 .show_post
     comment = Comment.query.get_or_404(comment_id)
     if not comment.post.can_comment:
         flash('Comment is disabled.', 'warning')
         # 跳回该文章
         return redirect(url_for('.show_post', post_id=comment.post.id))
-    # 跳回
+    # 构造replay和author跳回到.show_post该路径下comment-form下，让用户填写评论
     return redirect(
         url_for('.show_post', post_id=comment.post_id, reply=comment_id, author=comment.author) + '#comment-form')
 

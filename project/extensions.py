@@ -31,11 +31,16 @@ ckeditor = CKEditor()
 
 @login_manager.user_loader
 def load_user(user_id):
+    """
+    登录加载，保护
+    :param user_id: 用户id
+    :return:
+    """
     from .models import Admin
     user = Admin.query.get(int(user_id))
     return user
 
 
 login_manager.login_view = 'auth.login'
-# login_manager.login_message = 'Your custom message'
+login_manager.login_message = u'请先登录！'
 login_manager.login_message_category = 'warning'
